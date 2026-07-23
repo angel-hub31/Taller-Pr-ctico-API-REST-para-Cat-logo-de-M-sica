@@ -4,8 +4,11 @@ import { obtenerCanciones,crearCanciones,actualizarCanciones,eliminarCancion } f
 const router =Router();
 
 router.get("/",obtenerCanciones);
+                    //nombre de la funcion 
 router.post("/", crearCanciones);
 router.put("/:id", actualizarCanciones);
 router.delete("/:id", eliminarCancion);
 
 export default router;
+
+
