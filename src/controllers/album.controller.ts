@@ -13,14 +13,33 @@ export const obtenerAlbumes = async (req: Request, res:Response)=>{
 
     }
 }
+//  
+export const obtenerAlbumId = async (req:Request, res :Response)=>{
+    const {id} =req.params;
+    try{
+        const album =await prisma.album.findUnique({
+            where: {id: Number(id)},
+            include: {canciones: true}
+        });
+        if(!album){
+            return res.status(404).json({error: "Album no encontrado"});
+        }
+        res.json(album);
+
+    }catch(error){
+        res.status(500).json({error: "Error al obtener album"})
+
+    }
+}
 
 export const crearAlbumes = async (req: Request, res:Response)=>{
-    const {titulo,artista,anio} = req.body
+    const {titulo,artista,anio,generoId} = req.body
+    
 
     try{
         const nuevoAlbum =await prisma.album.create({
             data: {
-                titulo,artista,anio
+                titulo,artista,anio,generoId: Number (generoId)
 
             }
         })

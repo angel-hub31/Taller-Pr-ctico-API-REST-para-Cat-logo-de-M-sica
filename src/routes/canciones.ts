@@ -1,11 +1,11 @@
 import { Router } from "express";
-import { obtenerCanciones,crearCanciones,actualizarCanciones,eliminarCancion } from "../controllers/cancion.controller.js";
+import { obtenerCanciones, crearCanciones, actualizarCanciones, eliminarCancion } from "../controllers/cancion.controller.js";
+import { validarCancion } from "../middleware/validarCancion.js";
 
-const router =Router();
+const router = Router();
 
-router.get("/",obtenerCanciones);
-                    //nombre de la funcion 
-router.post("/", crearCanciones);
+router.get("/", obtenerCanciones);
+router.post("/", validarCancion,crearCanciones);
 router.put("/:id", actualizarCanciones);
 router.delete("/:id", eliminarCancion);
 

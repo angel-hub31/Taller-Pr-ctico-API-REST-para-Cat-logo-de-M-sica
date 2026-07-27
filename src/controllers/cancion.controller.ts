@@ -1,68 +1,72 @@
-import{ type Request, type Response } from "express";
+import { type Request, type Response } from "express";
 import prisma from "../database/prisma.js";
 
 
-export const obtenerCanciones = async (req: Request, res:Response)=>{
-    try{
+export const obtenerCanciones = async (req: Request, res: Response) => {
+    try {
 
-        const canciones=await prisma.cancion.findMany();
+        const canciones = await prisma.cancion.findMany();
         res.json(canciones)
 
-    }catch(error){
-        res.status(500).json({error: "Error al obtener Canciones"})
+    } catch (error) {
+        res.status(500).json({ error: "Error al obtener Canciones" })
 
     }
-}
+};
+//
 
-export const crearCanciones = async (req: Request, res:Response)=>{
-    const {titulo,duracion,albumId} = req.body
+export const crearCanciones = async (req: Request, res: Response) => {
+    const { titulo, duracion, albumId } = req.body
 
-    try{
-        const nuevoCancion =await prisma.cancion.create({
+    //
+
+
+    try {
+        const nuevoCancion = await prisma.cancion.create({
             data: {
-                titulo,duracion,albumId
+                titulo, duracion, albumId
 
             }
         })
         res.status(201).json(nuevoCancion)
 
-    }catch(error){
-        res.status(500).json({error: " al crear Cancion"})
+    } catch (error) {
+        res.status(500).json({ error: " al crear Cancion" })
 
     }
 
 }
 
-export const actualizarCanciones =async (req: Request, res:Response)=>{
-    const {id}= req.params
-    const {titulo,duracion,albumId}= req.body
+export const actualizarCanciones = async (req: Request, res: Response) => {
+    const { id } = req.params
+    const { titulo, duracion, albumId } = req.body
 
-    try{
+    try {
         const cancionActualizado = await prisma.cancion.update({
-            where: {id: Number(id)},
-            data: {titulo,duracion,albumId}
-        
+            where: { id: Number(id) },
+            data: { titulo, duracion, albumId }
+
 
         })
         res.json(cancionActualizado)
 
-    }catch(error){
-        res.status(404).json({error: "Cancion no encontrado"});
+    } catch (error) {
+        res.status(404).json({ error: "Cancion no encontrado" });
 
     }
 };
 
-export const eliminarCancion =async (req: Request, res:Response)=>{
-    const {id}= req.params;
+export const eliminarCancion = async (req: Request, res: Response) => {
+    const { id } = req.params;
 
-    try{
+    try {
         await prisma.cancion.delete({
-            where: {id:Number(id)}
+            where: { id: Number(id) }
         })
-        res.json({Exito: "Cancion eliminado correctamente"});
+        res.json({ Exito: "Cancion eliminado correctamente" });
 
-    }catch(error){
-        res.status(404).json({error: "Cancion no encontrado"});
+    } catch (error) {
+        res.status(404).json({ error: "Cancion no encontrado" });
 
     }
 }

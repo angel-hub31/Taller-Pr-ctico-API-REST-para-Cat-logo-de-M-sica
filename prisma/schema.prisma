@@ -1,8 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
   provider = "prisma-client"
   output   = "../src/generated/prisma"
@@ -10,24 +5,32 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  
 }
-
 
 model Album {
   id        Int       @id @default(autoincrement())
   titulo    String
   artista   String
   anio      Int
-  canciones Cancion[] // Un álbum tiene muchas canciones
+  canciones Cancion[]
+
+  generoId Int
+  genero Genero @relation(fields: [generoId], references: [id], onDelete: Cascade)
+
 }
 
 model Cancion {
-  id        Int     @id @default(autoincrement())
-  titulo    String
-  duracion  Int     // Duración en segundos (ej. 240)
-  albumId   Int     // Clave foránea obligatoria
-  
-  // Establecemos la relación y definimos el borrado en cascada
-  album     Album   @relation(fields: [albumId], references: [id], onDelete: Cascade)
+  id       Int    @id @default(autoincrement())
+  titulo   String
+  duracion Int
+  albumId  Int
+  album    Album  @relation(fields: [albumId], references: [id], onDelete: Cascade)
+}
+
+model Genero {
+  id       Int    @id @default(autoincrement())
+  nombre String
+  albumes Album[]
+
+
 }
